@@ -3,123 +3,128 @@
 import { FormEvent, useState } from 'react'
 import { agency } from '@/lib/agency'
 import type { Profile } from '@/lib/profiles'
-
-const projectTypes = [
-  { value: 'tvc', label: 'TVC / Reklama wideo' },
-  { value: 'print', label: 'Sesja zdjęciowa / Print' },
-  { value: 'duo', label: 'Projekt w duecie z rodzeństwem' },
-] as const
+import { projectTypes, type InquiryModel } from '@/lib/inquiries/types'
 
 type ContactFormProps = {
-  profile: Profile
+  profile?: Profile
+  tone?: 'on-dark' | 'on-light'
 }
 
-export function ContactForm({ profile }: ContactFormProps) {
-  const [sent, setSent] = useState(false)
+export function ContactForm({ profile, tone = 'on-dark' }: ContactFormProps) {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [error, setError] = useState('')
+  const model: InquiryModel = profile?.slug ?? 'family'
+  const dark = tone === 'on-dark'
+  const fieldClass = dark
+    ? 'border border-background/20 bg-transparent px-4 py-3 text-background outline-none focus:border-primary'
+    : 'border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary'
+  const labelClass = dark
+    ? 'text-[10px] uppercase tracking-[0.2em] text-background/50'
+    : 'text-[10px] uppercase tracking-[0.2em] text-muted-foreground'
+  const radioClass = dark ? 'text-background/80' : 'text-foreground/80'
 
   const duoLabel =
-    profile.slug === 'tola' ? 'Projekt w duecie z bratem' : 'Projekt w duecie z siostrą'
+    model === 'tola' ? 'Projekt w duecie z bratem' : model === 'milo' ? 'Projekt w duecie z siostrą' : 'Projekt w duecie Tola + Milo'
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setStatus('sending')
+    setError('')
     const data = new FormData(event.currentTarget)
-    const name = String(data.get('name') ?? '').trim()
-    const company = String(data.get('company') ?? '').trim()
-    const email = String(data.get('email') ?? '').trim()
-    const phone = String(data.get('phone') ?? '').trim()
-    const project = String(data.get('project') ?? '')
-    const message = String(data.get('message') ?? '').trim()
-    const projectLabel =
-      project === 'duo' ? duoLabel : projectTypes.find((item) => item.value === project)?.label ?? project
+    const payload = {
+      name: String(data.get('name') ?? ''),
+      company: String(data.get('company') ?? ''),
+      email: String(data.get('email') ?? ''),
+      phone: String(data.get('phone') ?? ''),
+      project: String(data.get('project') ?? ''),
+      message: String(data.get('message') ?? ''),
+      website: String(data.get('website') ?? ''),
+      model: String(data.get('model') ?? model),
+    }
 
-    const subject = `Commercial inquiry — ${profile.name} Lieske (${projectLabel})`
-    const body = [
-      `Imię i nazwisko: ${name}`,
-      `Firma / produkcja: ${company || '—'}`,
-      `E-mail: ${email}`,
-      `Telefon: ${phone || '—'}`,
-      `Rodzaj projektu: ${projectLabel}`,
-      `Model: ${profile.name} Lieske`,
-      '',
-      message,
-    ].join('\n')
-
-    window.location.href = `mailto:${agency.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    setSent(true)
+    try {
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const result = (await response.json()) as { ok?: boolean; error?: string }
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || 'Nie udało się wysłać zapytania.')
+      }
+      setStatus('sent')
+      event.currentTarget.reset()
+    } catch (submitError) {
+      setStatus('error')
+      setError(submitError instanceof Error ? submitError.message : 'Nie udało się wysłać zapytania.')
+    }
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-10 grid max-w-xl gap-4 text-sm">
+    <form onSubmit={onSubmit} className="relative mt-10 grid max-w-xl gap-4 text-sm">
+      <div className="absolute -left-[10000px] h-0 w-0 overflow-hidden" aria-hidden="true">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+      {profile ? <input type="hidden" name="model" value={model} /> : (
+        <label className="grid gap-2">
+          <span className={labelClass}>Dotyczy</span>
+          <select name="model" defaultValue="family" className={fieldClass}>
+            <option value="family">Tola i Milo / ogólne</option>
+            <option value="tola">Tola</option>
+            <option value="milo">Milo</option>
+          </select>
+        </label>
+      )}
       <label className="grid gap-2">
-        <span className="text-[10px] uppercase tracking-[0.2em] text-background/50">Imię i nazwisko</span>
-        <input
-          required
-          name="name"
-          autoComplete="name"
-          className="border border-background/20 bg-transparent px-4 py-3 text-background outline-none focus:border-primary"
-        />
+        <span className={labelClass}>Imię i nazwisko</span>
+        <input required name="name" autoComplete="name" className={fieldClass} />
       </label>
       <label className="grid gap-2">
-        <span className="text-[10px] uppercase tracking-[0.2em] text-background/50">Firma / produkcja</span>
-        <input
-          name="company"
-          autoComplete="organization"
-          className="border border-background/20 bg-transparent px-4 py-3 text-background outline-none focus:border-primary"
-        />
+        <span className={labelClass}>Firma / produkcja</span>
+        <input name="company" autoComplete="organization" className={fieldClass} />
       </label>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-background/50">E-mail</span>
-          <input
-            required
-            type="email"
-            name="email"
-            autoComplete="email"
-            className="border border-background/20 bg-transparent px-4 py-3 text-background outline-none focus:border-primary"
-          />
+          <span className={labelClass}>E-mail</span>
+          <input required type="email" name="email" autoComplete="email" className={fieldClass} />
         </label>
         <label className="grid gap-2">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-background/50">Telefon</span>
-          <input
-            type="tel"
-            name="phone"
-            autoComplete="tel"
-            className="border border-background/20 bg-transparent px-4 py-3 text-background outline-none focus:border-primary"
-          />
+          <span className={labelClass}>Telefon</span>
+          <input type="tel" name="phone" autoComplete="tel" className={fieldClass} />
         </label>
       </div>
       <fieldset className="grid gap-3">
-        <legend className="text-[10px] uppercase tracking-[0.2em] text-background/50">Rodzaj projektu</legend>
+        <legend className={labelClass}>Rodzaj projektu</legend>
         {projectTypes.map((item) => (
-          <label key={item.value} className="flex items-center gap-3 text-background/80">
+          <label key={item.value} className={`flex items-center gap-3 ${radioClass}`}>
             <input type="radio" name="project" value={item.value} required className="accent-primary" />
             {item.value === 'duo' ? duoLabel : item.label}
           </label>
         ))}
       </fieldset>
       <label className="grid gap-2">
-        <span className="text-[10px] uppercase tracking-[0.2em] text-background/50">Wiadomość</span>
-        <textarea
-          name="message"
-          rows={4}
-          className="resize-y border border-background/20 bg-transparent px-4 py-3 text-background outline-none focus:border-primary"
-        />
+        <span className={labelClass}>Wiadomość</span>
+        <textarea name="message" rows={4} className={`resize-y ${fieldClass}`} />
       </label>
       <button
         type="submit"
-        className="mt-2 w-fit bg-primary px-6 py-3 text-[10px] uppercase tracking-[0.22em] text-primary-foreground transition-opacity hover:opacity-90"
+        disabled={status === 'sending'}
+        className="mt-2 w-fit bg-primary px-6 py-3 text-[10px] uppercase tracking-[0.22em] text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
       >
-        {profile.bookLabel}
+        {status === 'sending' ? 'Wysyłanie…' : profile?.bookLabel ?? 'Wyślij zapytanie'}
       </button>
-      {sent ? (
-        <p className="text-xs text-background/60">
-          Otworzy się wiadomość do bookera Moon Kids. Jeśli klient poczty nie wystartował, napisz bezpośrednio na{' '}
-          <a className="text-primary underline-offset-4 hover:underline" href={`mailto:${agency.email}`}>
-            {agency.email}
-          </a>
-          .
+      <p className={`text-xs ${dark ? 'text-background/55' : 'text-muted-foreground'}`}>
+        Zapytanie idzie do bookera Moon Kids ({agency.email}). Kopia zostaje u nas, żebyśmy widzieli kto pisze.
+      </p>
+      {status === 'sent' ? (
+        <p className={`text-sm ${dark ? 'text-primary' : 'text-foreground'}`}>
+          Dziękujemy. Zapytanie zostało wysłane.
         </p>
       ) : null}
+      {status === 'error' ? <p className="text-sm text-red-400">{error}</p> : null}
     </form>
   )
 }
