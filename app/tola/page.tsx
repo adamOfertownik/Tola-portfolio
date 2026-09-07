@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import { ProfilePage } from '@/components/profile/profile-page'
-import { tola } from '@/lib/profiles'
+import { getProfile } from '@/lib/profiles'
+
+const tolaMeta = getProfile('tola')
 
 export const metadata: Metadata = {
-  title: tola.metaTitle,
-  description: tola.metaDescription,
+  title: tolaMeta.metaTitle,
+  description: tolaMeta.metaDescription,
 }
 
 export default function TolaPage() {
-  return <ProfilePage profile={tola} />
+  return <ProfilePage profile={getProfile('tola')} />
 }

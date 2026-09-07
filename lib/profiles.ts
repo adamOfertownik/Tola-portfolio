@@ -1,3 +1,5 @@
+import { birthDates, calculateAge, formatAge, formatAgeLine } from '@/lib/age'
+
 export type PhotoCategory = 'commercial' | 'polaroid'
 
 export type Photo = {
@@ -48,31 +50,34 @@ export type Profile = {
   metaDescription: string
 }
 
-const SMYK_CREDITS = 'Client: SMYK | Production: Ilmatic | Agency: Moon Kids'
+type ProfileConfig = Omit<Profile, 'ageLine' | 'measurements' | 'sibling'> & {
+  measurements: Omit<Profile['measurements'], 'age'>
+  sibling: Omit<Profile['sibling'], 'banner'> & {
+    banner: string | ((siblingAge: string) => string)
+  }
+}
 
-export const tola: Profile = {
+const tolaConfig: ProfileConfig = {
   slug: 'tola',
   theme: 'tola',
   name: 'Tola',
   greeting: 'hello',
   kicker: 'Model portfolio · Warsaw / Poland',
-  campaignLine: 'Cover Girl XMASS AW26 Campaign for SMYK',
-  ageLine: '2 lata / 4 miesiące',
+  campaignLine: 'Commercial campaigns · Warsaw',
   personality: 'naturalna energia, charakter, radość',
   hero: {
-    src: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1400&q=80',
-    alt: 'Tola — zdjęcie główne portfolio',
+    src: '/photos/tola/hero-set.jpg',
+    alt: 'Tola na planie — rozpuszczone włosy',
   },
   about: {
     eyebrow: 'About Tola',
     title: 'Mała osoba.',
     titleEm: 'Duża obecność.',
     body: 'Tola ma w sobie naturalność, która przyciąga uwagę. Jest otwarta, uważna i swobodna przed obiektywem — dokładnie taka, jakiej szukają marki dziecięce.',
-    highlightLabel: 'Recent highlight',
-    highlight: 'Okładka świątecznego katalogu Smyk',
+    highlightLabel: 'Work',
+    highlight: 'Kampanie komercyjne i testy agencyjne',
   },
   measurements: {
-    age: '2 lata 4 miesiące',
     height: '92 cm',
     heightCm: '92',
     clothing: '92 / 98',
@@ -82,34 +87,14 @@ export const tola: Profile = {
   },
   photos: [
     {
-      src: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — kampania XMASS AW26 dla SMYK',
-      label: 'Campaign 01 · SMYK',
+      src: '/photos/tola/hero-set.jpg',
+      alt: 'Tola na planie — rozpuszczone włosy',
+      label: 'On set 01',
       category: 'commercial',
-      credits: SMYK_CREDITS,
     },
     {
-      src: 'https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — polaroid testowy, światło 5500 K',
-      label: 'Polaroid 01',
-      category: 'polaroid',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola na tle materiałów kampanii SMYK — kadr in-situ',
-      label: 'In-Situ · SMYK',
-      category: 'commercial',
-      credits: SMYK_CREDITS,
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — portret testowy',
-      label: 'Portrait 01',
-      category: 'polaroid',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1503919005314-30d93d07d823?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — zdjęcie lifestyle',
+      src: '/photos/tola/ice-cream.jpg',
+      alt: 'Tola z lodem — park',
       label: 'Lifestyle 01',
       category: 'polaroid',
     },
@@ -117,25 +102,24 @@ export const tola: Profile = {
   sibling: {
     slug: 'milo',
     name: 'Milo',
-    banner:
-      'Tola ma 5-letniego brata Milo. Biorą udział we wspólnych projektach komercyjnych i reklamach rodzeństwa.',
+    banner: (siblingAge) =>
+      `Tola ma młodszego brata Milo (${siblingAge}). Biorą udział we wspólnych projektach komercyjnych i reklamach rodzeństwa.`,
     cta: 'Zobacz profil Milo',
   },
   bookLabel: 'Book Tola / Commercial Inquiries',
   navAbout: 'O Toli',
   metaTitle: 'Tola Lieske — Model Portfolio',
   metaDescription:
-    'Portfolio Toli Lieske, dziecięcej modelki reprezentowanej wyłącznie przez Moon Kids. Cover Girl XMASS AW26 Campaign for SMYK.',
+    'Portfolio Toli Lieske, dziecięcej modelki reprezentowanej wyłącznie przez Moon Kids. Sesje komercyjne w Warszawie.',
 }
 
-export const milo: Profile = {
+const miloConfig: ProfileConfig = {
   slug: 'milo',
   theme: 'milo',
   name: 'Milo',
   greeting: 'hey',
   kicker: 'Model portfolio · Warsaw / Poland',
-  campaignLine: 'Commercial & sibling campaigns',
-  ageLine: '5 lat',
+  campaignLine: 'Commercial & sibling campaigns · Warsaw',
   personality: 'luz, charakter, energia przed kamerą',
   hero: {
     src: 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1400&q=80',
@@ -150,7 +134,6 @@ export const milo: Profile = {
     highlight: 'Wspólne kampanie komercyjne z siostrą Tolą',
   },
   measurements: {
-    age: '5 lat',
     height: '112 cm',
     heightCm: '112',
     clothing: '110 / 116',
@@ -199,8 +182,8 @@ export const milo: Profile = {
   sibling: {
     slug: 'tola',
     name: 'Tola',
-    banner:
-      'Milo ma młodszą siostrę Tolę. Biorą udział we wspólnych projektach komercyjnych i reklamach rodzeństwa.',
+    banner: (siblingAge) =>
+      `Milo ma starszą siostrę Tolę (${siblingAge}). Biorą udział we wspólnych projektach komercyjnych i reklamach rodzeństwa.`,
     cta: 'Zobacz profil Toli',
   },
   bookLabel: 'Book Milo / Commercial Inquiries',
@@ -210,4 +193,43 @@ export const milo: Profile = {
     'Portfolio Milo Lieske, dziecięcego modela reprezentowanego wyłącznie przez Moon Kids. Kampanie komercyjne i projekty rodzeństwa z Tolą.',
 }
 
-export const profiles = { tola, milo } as const
+const profileConfigs = {
+  tola: tolaConfig,
+  milo: miloConfig,
+} as const
+
+function buildProfile(slug: keyof typeof profileConfigs, asOf = new Date(), siblingAge?: string): Profile {
+  const config = profileConfigs[slug]
+  const age = calculateAge(birthDates[slug], asOf)
+  const resolvedSiblingAge = siblingAge ?? formatAge(calculateAge(birthDates[config.sibling.slug], asOf))
+  const banner =
+    typeof config.sibling.banner === 'function' ? config.sibling.banner(resolvedSiblingAge) : config.sibling.banner
+
+  return {
+    ...config,
+    ageLine: formatAgeLine(age),
+    measurements: {
+      ...config.measurements,
+      age: formatAge(age),
+    },
+    sibling: {
+      slug: config.sibling.slug,
+      name: config.sibling.name,
+      banner,
+      cta: config.sibling.cta,
+    },
+  }
+}
+
+export function getProfile(slug: keyof typeof profileConfigs, asOf = new Date()): Profile {
+  const siblingSlug = profileConfigs[slug].sibling.slug
+  const siblingAge = formatAge(calculateAge(birthDates[siblingSlug], asOf))
+  return buildProfile(slug, asOf, siblingAge)
+}
+
+export function getProfiles(asOf = new Date()) {
+  return {
+    tola: getProfile('tola', asOf),
+    milo: getProfile('milo', asOf),
+  }
+}

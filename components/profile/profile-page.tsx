@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowDownRight, ArrowUpRight, Download, Menu, X } from 'lucide-react'
 import { agency } from '@/lib/agency'
+import { familyPhoto } from '@/lib/family'
 import type { Profile } from '@/lib/profiles'
 import { ContactForm } from '@/components/profile/contact-form'
 import { Gallery } from '@/components/profile/gallery'
@@ -189,20 +190,32 @@ export function ProfilePage({ profile }: ProfilePageProps) {
       </section>
 
       <section className="border-y border-border px-6 py-16 md:px-10 md:py-20" aria-labelledby="siblings-heading">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-8 md:flex-row md:items-end">
+        <div className="mx-auto grid max-w-[1400px] gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-end">
           <div className="max-w-2xl">
             <p id="siblings-heading" className="mb-4 text-[10px] uppercase tracking-[0.28em] text-primary">
               Siblings / Work in Pair
             </p>
             <p className="text-lg leading-8 text-muted-foreground md:text-xl">{profile.sibling.banner}</p>
+            <Link
+              href={`/${profile.sibling.slug}`}
+              className="group mt-8 inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.22em]"
+            >
+              {profile.sibling.cta}
+              <ArrowUpRight size={16} className="text-primary transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </Link>
           </div>
-          <Link
-            href={`/${profile.sibling.slug}`}
-            className="group inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.22em]"
-          >
-            {profile.sibling.cta}
-            <ArrowUpRight size={16} className="text-primary transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-          </Link>
+          <figure>
+            <div className="relative aspect-[4/5] overflow-hidden bg-muted">
+              <Image
+                src={familyPhoto.src}
+                alt={familyPhoto.alt}
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-cover grayscale-[8%]"
+              />
+            </div>
+            <figcaption className="mt-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{familyPhoto.label}</figcaption>
+          </figure>
         </div>
       </section>
 

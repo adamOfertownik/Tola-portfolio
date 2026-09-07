@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { CompCard } from '@/components/profile/comp-card'
-import { tola } from '@/lib/profiles'
+import { getProfile } from '@/lib/profiles'
 
 export const metadata: Metadata = {
   title: 'Tola — Karta castingowa',
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 }
 
 export default function TolaCompCardPage() {
-  return <CompCard profile={tola} />
+  return <CompCard profile={getProfile('tola')} />
 }
