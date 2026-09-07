@@ -1,36 +1,37 @@
 export const projectTypes = [
   { value: 'tvc', label: 'TVC / Reklama wideo' },
   { value: 'print', label: 'Sesja zdjęciowa / Print' },
-  { value: 'duo', label: 'Projekt w duecie z rodzeństwem' },
+] as const
+
+export const subjects = [
+  { value: 'tola', label: 'Tola' },
+  { value: 'milo', label: 'Milo' },
+  { value: 'together', label: 'Dwoje razem' },
+  { value: 'withParents', label: 'Dwójka z rodzicami' },
 ] as const
 
 export type ProjectType = (typeof projectTypes)[number]['value']
-export type InquiryModel = 'tola' | 'milo' | 'family'
+export type InquirySubject = (typeof subjects)[number]['value']
 
 export type Inquiry = {
   id: string
   createdAt: string
-  model: InquiryModel
+  subject: InquirySubject
   name: string
   company: string
   email: string
   phone: string
-  project: ProjectType
+  projects: ProjectType[]
   projectLabel: string
   message: string
 }
 
-export function projectLabelFor(project: string, model: InquiryModel) {
-  if (project === 'duo') {
-    if (model === 'tola') return 'Projekt w duecie z bratem'
-    if (model === 'milo') return 'Projekt w duecie z siostrą'
-    return 'Projekt w duecie Tola + Milo'
-  }
-  return projectTypes.find((item) => item.value === project)?.label ?? project
+export function projectLabelFor(projects: string[]) {
+  return projects
+    .map((project) => projectTypes.find((item) => item.value === project)?.label ?? project)
+    .join(', ')
 }
 
-export function modelLabel(model: InquiryModel) {
-  if (model === 'tola') return 'Tola Lieske'
-  if (model === 'milo') return 'Milo Lieske'
-  return 'Tola & Milo Lieske'
+export function subjectLabel(subject: InquirySubject) {
+  return subjects.find((item) => item.value === subject)?.label ?? subject
 }

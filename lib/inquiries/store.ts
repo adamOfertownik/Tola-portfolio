@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { neon } from '@neondatabase/serverless'
-import type { Inquiry } from '@/lib/inquiries/types'
+import { projectLabelFor, type Inquiry, type InquirySubject, type ProjectType } from '@/lib/inquiries/types'
 
 const localFile = path.join(process.cwd(), 'data', 'inquiries.json')
 
@@ -9,17 +9,30 @@ function databaseUrl() {
   return process.env.DATABASE_URL?.trim() || process.env.POSTGRES_URL?.trim() || ''
 }
 
+function parseProjects(value: unknown): ProjectType[] {
+  const raw = Array.isArray(value) ? value.map(String) : String(value ?? '').split(',')
+  return raw.filter((item): item is ProjectType => item === 'tvc' || item === 'print')
+}
+
+function parseSubject(row: Record<string, unknown>): InquirySubject {
+  const value = String(row.subject ?? row.model ?? '')
+  if (value === 'tola' || value === 'milo' || value === 'together' || value === 'withParents') return value
+  if (value === 'family' || value === 'duo') return 'together'
+  return 'together'
+}
+
 function rowToInquiry(row: Record<string, unknown>): Inquiry {
+  const projects = parseProjects(row.projects ?? row.project)
   return {
     id: String(row.id),
-    createdAt: new Date(String(row.created_at)).toISOString(),
-    model: row.model as Inquiry['model'],
+    createdAt: new Date(String(row.created_at ?? row.createdAt)).toISOString(),
+    subject: parseSubject(row),
     name: String(row.name),
     company: String(row.company ?? ''),
     email: String(row.email),
     phone: String(row.phone ?? ''),
-    project: row.project as Inquiry['project'],
-    projectLabel: String(row.project_label),
+    projects,
+    projectLabel: String(row.project_label ?? row.projectLabel ?? projectLabelFor(projects)),
     message: String(row.message ?? ''),
   }
 }
@@ -27,8 +40,9 @@ function rowToInquiry(row: Record<string, unknown>): Inquiry {
 async function readLocal(): Promise<Inquiry[]> {
   try {
     const raw = await readFile(localFile, 'utf8')
-    const parsed = JSON.parse(raw) as Inquiry[]
-    return Array.isArray(parsed) ? parsed : []
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) return []
+    return parsed.map((item) => rowToInquiry(item as Record<string, unknown>))
   } catch {
     return []
   }
@@ -63,12 +77,12 @@ export async function saveInquiry(inquiry: Inquiry) {
       ) VALUES (
         ${inquiry.id},
         ${inquiry.createdAt},
-        ${inquiry.model},
+        ${inquiry.subject},
         ${inquiry.name},
         ${inquiry.company},
         ${inquiry.email},
         ${inquiry.phone},
-        ${inquiry.project},
+        ${inquiry.projects.join(',')},
         ${inquiry.projectLabel},
         ${inquiry.message}
       )

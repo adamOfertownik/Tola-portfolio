@@ -3,7 +3,7 @@
 import { FormEvent, useState } from 'react'
 import { agency } from '@/lib/agency'
 import type { Profile } from '@/lib/profiles'
-import { projectTypes, type InquiryModel } from '@/lib/inquiries/types'
+import { projectTypes, subjects } from '@/lib/inquiries/types'
 
 type ContactFormProps = {
   profile?: Profile
@@ -13,7 +13,6 @@ type ContactFormProps = {
 export function ContactForm({ profile, tone = 'on-dark' }: ContactFormProps) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
-  const model: InquiryModel = profile?.slug ?? 'family'
   const dark = tone === 'on-dark'
   const fieldClass = dark
     ? 'border border-background/20 bg-transparent px-4 py-3 text-background outline-none focus:border-primary'
@@ -21,10 +20,8 @@ export function ContactForm({ profile, tone = 'on-dark' }: ContactFormProps) {
   const labelClass = dark
     ? 'text-[10px] uppercase tracking-[0.2em] text-background/50'
     : 'text-[10px] uppercase tracking-[0.2em] text-muted-foreground'
-  const radioClass = dark ? 'text-background/80' : 'text-foreground/80'
-
-  const duoLabel =
-    model === 'tola' ? 'Projekt w duecie z bratem' : model === 'milo' ? 'Projekt w duecie z siostrą' : 'Projekt w duecie Tola + Milo'
+  const optionClass = dark ? 'text-background/80' : 'text-foreground/80'
+  const defaultSubject = profile?.slug === 'milo' ? 'milo' : profile?.slug === 'tola' ? 'tola' : undefined
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -32,15 +29,22 @@ export function ContactForm({ profile, tone = 'on-dark' }: ContactFormProps) {
     setStatus('sending')
     setError('')
     const data = new FormData(form)
+    const projects = data.getAll('projects').map(String)
+    if (projects.length === 0) {
+      setStatus('error')
+      setError('Zaznacz rodzaj projektu. Można wybrać obie pozycje.')
+      return
+    }
+
     const payload = {
       name: String(data.get('name') ?? ''),
       company: String(data.get('company') ?? ''),
       email: String(data.get('email') ?? ''),
       phone: String(data.get('phone') ?? ''),
-      project: String(data.get('project') ?? ''),
+      subject: String(data.get('subject') ?? ''),
+      projects,
       message: String(data.get('message') ?? ''),
       website: String(data.get('website') ?? ''),
-      model: String(data.get('model') ?? model),
     }
 
     try {
@@ -69,16 +73,6 @@ export function ContactForm({ profile, tone = 'on-dark' }: ContactFormProps) {
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
-      {profile ? <input type="hidden" name="model" value={model} /> : (
-        <label className="grid gap-2">
-          <span className={labelClass}>Dotyczy</span>
-          <select name="model" defaultValue="family" className={fieldClass}>
-            <option value="family">Tola i Milo / ogólne</option>
-            <option value="tola">Tola</option>
-            <option value="milo">Milo</option>
-          </select>
-        </label>
-      )}
       <label className="grid gap-2">
         <span className={labelClass}>Imię i nazwisko</span>
         <input required name="name" autoComplete="name" className={fieldClass} />
@@ -98,11 +92,28 @@ export function ContactForm({ profile, tone = 'on-dark' }: ContactFormProps) {
         </label>
       </div>
       <fieldset className="grid gap-3">
+        <legend className={labelClass}>Zapytanie dotyczy</legend>
+        {subjects.map((item) => (
+          <label key={item.value} className={`flex items-center gap-3 ${optionClass}`}>
+            <input
+              type="radio"
+              name="subject"
+              value={item.value}
+              required
+              defaultChecked={defaultSubject === item.value}
+              className="accent-primary"
+            />
+            {item.label}
+          </label>
+        ))}
+      </fieldset>
+      <fieldset className="grid gap-3">
         <legend className={labelClass}>Rodzaj projektu</legend>
+        <p className={`-mt-1 text-xs ${dark ? 'text-background/50' : 'text-muted-foreground'}`}>Można zaznaczyć obie pozycje.</p>
         {projectTypes.map((item) => (
-          <label key={item.value} className={`flex items-center gap-3 ${radioClass}`}>
-            <input type="radio" name="project" value={item.value} required className="accent-primary" />
-            {item.value === 'duo' ? duoLabel : item.label}
+          <label key={item.value} className={`flex items-center gap-3 ${optionClass}`}>
+            <input type="checkbox" name="projects" value={item.value} className="accent-primary" />
+            {item.label}
           </label>
         ))}
       </fieldset>

@@ -5,7 +5,7 @@ import { InquiriesLogout } from '@/components/inquiries/logout-button'
 import { agency } from '@/lib/agency'
 import { inquiriesCookieName, isValidInquiriesSession } from '@/lib/inquiries/auth'
 import { listInquiries } from '@/lib/inquiries/store'
-import { modelLabel } from '@/lib/inquiries/types'
+import { subjectLabel } from '@/lib/inquiries/types'
 
 export const metadata = {
   title: 'Zapytania — Lieske',
@@ -82,8 +82,8 @@ export default async function InquiriesPage() {
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Model</dt>
-                    <dd>{modelLabel(inquiry.model)}</dd>
+                    <dt className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Dotyczy</dt>
+                    <dd>{subjectLabel(inquiry.subject)}</dd>
                   </div>
                   <div>
                     <dt className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Projekt</dt>

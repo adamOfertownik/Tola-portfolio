@@ -1,6 +1,6 @@
 import { Resend } from 'resend'
 import { agency } from '@/lib/agency'
-import { modelLabel, type Inquiry } from '@/lib/inquiries/types'
+import { subjectLabel, type Inquiry } from '@/lib/inquiries/types'
 
 function notifyEmail() {
   return process.env.INQUIRY_NOTIFY_EMAIL?.trim() || ''
@@ -18,11 +18,11 @@ export async function emailInquiry(inquiry: Inquiry) {
 
   const copyTo = notifyEmail()
   const resend = new Resend(apiKey)
-  const subject = `Zapytanie komercyjne — ${modelLabel(inquiry.model)} (${inquiry.projectLabel})`
+  const subject = `Zapytanie komercyjne — ${subjectLabel(inquiry.subject)} (${inquiry.projectLabel})`
   const text = [
     `Nowe zapytanie z lieske.art / portfolio.`,
     '',
-    `Model: ${modelLabel(inquiry.model)}`,
+    `Dotyczy: ${subjectLabel(inquiry.subject)}`,
     `Imię i nazwisko: ${inquiry.name}`,
     `Firma / produkcja: ${inquiry.company || '—'}`,
     `E-mail: ${inquiry.email}`,

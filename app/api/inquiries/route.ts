@@ -2,13 +2,25 @@ import { NextResponse } from 'next/server'
 import { randomUUID } from 'node:crypto'
 import { emailInquiry } from '@/lib/inquiries/email'
 import { saveInquiry } from '@/lib/inquiries/store'
-import { projectLabelFor, projectTypes, type InquiryModel, type ProjectType } from '@/lib/inquiries/types'
+import {
+  projectLabelFor,
+  projectTypes,
+  subjects,
+  type InquirySubject,
+  type ProjectType,
+} from '@/lib/inquiries/types'
 
-const models: InquiryModel[] = ['tola', 'milo', 'family']
-const projects = projectTypes.map((item) => item.value)
+const subjectValues = subjects.map((item) => item.value)
+const projectValues = projectTypes.map((item) => item.value)
 
 function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
+
+function readProjects(body: Record<string, unknown>): ProjectType[] {
+  const raw = body.projects ?? body.project
+  const list = Array.isArray(raw) ? raw.map(String) : String(raw ?? '').split(',')
+  return list.filter((item): item is ProjectType => projectValues.includes(item as ProjectType))
 }
 
 export async function POST(request: Request) {
@@ -23,8 +35,8 @@ export async function POST(request: Request) {
     const company = String(body.company ?? '').trim()
     const phone = String(body.phone ?? '').trim()
     const message = String(body.message ?? '').trim()
-    const model = String(body.model ?? '') as InquiryModel
-    const project = String(body.project ?? '') as ProjectType
+    const subject = String(body.subject ?? body.model ?? '') as InquirySubject
+    const projects = readProjects(body)
 
     if (name.length < 2 || name.length > 120) {
       return NextResponse.json({ ok: false, error: 'Podaj imię i nazwisko.' }, { status: 400 })
@@ -32,11 +44,11 @@ export async function POST(request: Request) {
     if (!isEmail(email) || email.length > 160) {
       return NextResponse.json({ ok: false, error: 'Podaj poprawny adres e-mail.' }, { status: 400 })
     }
-    if (!models.includes(model)) {
-      return NextResponse.json({ ok: false, error: 'Wybierz profil.' }, { status: 400 })
+    if (!subjectValues.includes(subject)) {
+      return NextResponse.json({ ok: false, error: 'Wybierz, kogo dotyczy zapytanie.' }, { status: 400 })
     }
-    if (!projects.includes(project)) {
-      return NextResponse.json({ ok: false, error: 'Wybierz rodzaj projektu.' }, { status: 400 })
+    if (projects.length === 0) {
+      return NextResponse.json({ ok: false, error: 'Wybierz rodzaj projektu. Można zaznaczyć oba.' }, { status: 400 })
     }
     if (message.length > 4000) {
       return NextResponse.json({ ok: false, error: 'Wiadomość jest za długa.' }, { status: 400 })
@@ -45,13 +57,13 @@ export async function POST(request: Request) {
     const inquiry = {
       id: randomUUID(),
       createdAt: new Date().toISOString(),
-      model,
+      subject,
       name,
       company,
       email,
       phone,
-      project,
-      projectLabel: projectLabelFor(project, model),
+      projects,
+      projectLabel: projectLabelFor(projects),
       message,
     }
 
