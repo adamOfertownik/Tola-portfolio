@@ -3,9 +3,10 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { agency } from '@/lib/agency'
 import { familyPhoto } from '@/lib/family'
-import { milo, tola } from '@/lib/profiles'
+import { getProfiles } from '@/lib/profiles'
 
 export function FamilyHub() {
+  const { tola, milo } = getProfiles()
   return (
     <main className="min-h-screen bg-background text-foreground">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-md">

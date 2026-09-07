@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import { ProfilePage } from '@/components/profile/profile-page'
-import { milo } from '@/lib/profiles'
+import { getProfile } from '@/lib/profiles'
+
+const miloMeta = getProfile('milo')
 
 export const metadata: Metadata = {
-  title: milo.metaTitle,
-  description: milo.metaDescription,
+  title: miloMeta.metaTitle,
+  description: miloMeta.metaDescription,
 }
 
 export default function MiloPage() {
-  return <ProfilePage profile={milo} />
+  return <ProfilePage profile={getProfile('milo')} />
 }
