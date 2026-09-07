@@ -103,7 +103,7 @@ export function Gallery({ photos }: GalleryProps) {
             <button
               type="button"
               onClick={() => setActive(index)}
-              className="group block w-full overflow-hidden bg-muted text-left"
+              className="group block w-full cursor-pointer overflow-hidden bg-muted text-left"
               aria-label={`Powiększ zdjęcie: ${photo.label}`}
             >
               <span className="relative block aspect-[3/4]">

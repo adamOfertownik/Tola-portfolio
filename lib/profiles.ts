@@ -145,7 +145,7 @@ export const milo: Profile = {
   ageLine: '5 lat',
   personality: 'luz, charakter, energia przed kamerą',
   hero: {
-    src: 'https://images.unsplash.com/photo-1503919545889-aef606e88b45?auto=format&fit=crop&w=1400&q=80',
+    src: 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1400&q=80',
     alt: 'Milo — zdjęcie główne portfolio',
   },
   about: {
@@ -167,38 +167,38 @@ export const milo: Profile = {
   },
   photos: [
     {
-      src: 'https://images.unsplash.com/photo-1503919545889-aef606e88b45?auto=format&fit=crop&w=1400&q=80',
+      src: 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1400&q=80',
       alt: 'Milo — portret komercyjny',
       label: 'Campaign 01',
       category: 'commercial',
     },
     {
-      src: 'https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?auto=format&fit=crop&w=1400&q=80',
+      src: 'https://images.unsplash.com/photo-1602030028438-4cf153cbae9e?auto=format&fit=crop&w=1400&q=80',
       alt: 'Milo — polaroid testowy, światło 5500 K',
       label: 'Polaroid 01',
       category: 'polaroid',
     },
     {
-      src: 'https://images.unsplash.com/photo-1555009393-f20bdb245c4d?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Milo — kadr z sesji plenerowej',
+      src: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=1400&q=80',
+      alt: 'Milo — energia na planie',
       label: 'Campaign 02',
       category: 'commercial',
     },
     {
-      src: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=1400&q=80',
+      src: 'https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?auto=format&fit=crop&w=1400&q=80',
       alt: 'Milo — zdjęcie lifestyle',
       label: 'Lifestyle 01',
       category: 'polaroid',
     },
     {
-      src: 'https://images.unsplash.com/photo-1535572290543-960a8046f5af?auto=format&fit=crop&w=1400&q=80',
+      src: 'https://images.unsplash.com/photo-1502781252888-9143ba7f074e?auto=format&fit=crop&w=1400&q=80',
       alt: 'Milo — portret testowy',
       label: 'Portrait 01',
       category: 'polaroid',
     },
     {
-      src: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Milo — energia na planie',
+      src: 'https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?auto=format&fit=crop&w=1400&q=80',
+      alt: 'Milo — kadr komercyjny',
       label: 'Campaign 03',
       category: 'commercial',
     },
