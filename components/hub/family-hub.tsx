@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { agency } from '@/lib/agency'
+import { familyPhoto } from '@/lib/family'
 import { milo, tola } from '@/lib/profiles'
 
 export function FamilyHub() {
@@ -54,6 +55,29 @@ export function FamilyHub() {
           alt={milo.hero.alt}
           accent="milo"
         />
+      </section>
+
+      <section className="border-t border-border px-6 py-16 md:px-10 md:py-24">
+        <div className="mx-auto max-w-[1400px]">
+          <p className="mb-6 text-[10px] uppercase tracking-[0.28em] text-primary">Work in pair</p>
+          <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+            <figure>
+              <div className="relative aspect-[16/10] overflow-hidden bg-muted md:aspect-[16/9]">
+                <Image
+                  src={familyPhoto.src}
+                  alt={familyPhoto.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 70vw"
+                  className="object-cover grayscale-[8%]"
+                />
+              </div>
+              <figcaption className="mt-4 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{familyPhoto.label}</figcaption>
+            </figure>
+            <p className="max-w-md text-base leading-7 text-muted-foreground md:text-lg">
+              Wspólne projekty komercyjne i reklamy rodzeństwa. Dwa profile, jedna rodzina — Moon Kids.
+            </p>
+          </div>
+        </div>
       </section>
 
       <footer className="border-t border-border px-6 py-10 md:px-10">

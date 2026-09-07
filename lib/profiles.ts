@@ -58,8 +58,8 @@ export const tola: Profile = {
   ageLine: '2 lata / 4 miesiące',
   personality: 'naturalna energia, charakter, radość',
   hero: {
-    src: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1400&q=80',
-    alt: 'Tola — zdjęcie główne portfolio',
+    src: '/photos/tola/hero-set.jpg',
+    alt: 'Tola na planie — rozpuszczone włosy',
   },
   about: {
     eyebrow: 'About Tola',
@@ -80,32 +80,14 @@ export const tola: Profile = {
   },
   photos: [
     {
-      src: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — kadr komercyjny',
-      label: 'Campaign 01',
+      src: '/photos/tola/hero-set.jpg',
+      alt: 'Tola na planie — rozpuszczone włosy',
+      label: 'On set 01',
       category: 'commercial',
     },
     {
-      src: 'https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — polaroid testowy, światło 5500 K',
-      label: 'Polaroid 01',
-      category: 'polaroid',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — kadr komercyjny',
-      label: 'Campaign 02',
-      category: 'commercial',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — portret testowy',
-      label: 'Portrait 01',
-      category: 'polaroid',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1503919005314-30d93d07d823?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — zdjęcie lifestyle',
+      src: '/photos/tola/ice-cream.jpg',
+      alt: 'Tola z lodem — park',
       label: 'Lifestyle 01',
       category: 'polaroid',
     },
