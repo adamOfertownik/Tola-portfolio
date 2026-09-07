@@ -143,9 +143,9 @@ export const milo: Profile = {
   },
   about: {
     eyebrow: 'About Milo',
-    title: 'Mały chłopak.',
-    titleEm: 'Duża obecność.',
-    body: 'Milo ma naturalny luz i pewność przed obiektywem. Jest odważny, radosny i łatwo wchodzi w relację — dokładnie taki, jakiego szukają marki dziecięce i projekty rodzeństwa.',
+    title: 'Luz przed kamerą.',
+    titleEm: 'Charakter na planie.',
+    body: 'Milo wchodzi na plan bez spiny. Łatwo łapie relację, trzyma energię w kadrze i sprawdza się zarówno solo, jak we wspólnych projektach z Tolą.',
     highlightLabel: 'Work in pair',
     highlight: 'Wspólne kampanie komercyjne z siostrą Tolą',
   },
