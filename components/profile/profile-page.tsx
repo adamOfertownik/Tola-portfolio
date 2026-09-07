@@ -163,10 +163,14 @@ export function ProfilePage({ profile }: ProfilePageProps) {
       <section id="about" className="mx-auto grid max-w-[1400px] gap-16 px-6 py-24 md:grid-cols-[0.8fr_1.2fr] md:px-10 md:py-36">
         <div>
           <p className="mb-5 text-[10px] uppercase tracking-[0.28em] text-primary">{profile.about.eyebrow}</p>
-          <h2 className="max-w-sm font-serif text-5xl leading-[0.95] tracking-[-0.06em] md:text-7xl">
+          <h2 className="max-w-md font-serif text-5xl leading-[0.95] tracking-[-0.06em] md:text-7xl">
             {profile.about.title}
-            <br />
-            <em>{profile.about.titleEm}</em>
+            {profile.about.titleEm ? (
+              <>
+                <br />
+                <em>{profile.about.titleEm}</em>
+              </>
+            ) : null}
           </h2>
         </div>
         <div className="max-w-xl md:pt-14">

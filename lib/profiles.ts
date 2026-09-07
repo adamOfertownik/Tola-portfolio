@@ -21,7 +21,7 @@ export type Profile = {
   about: {
     eyebrow: string
     title: string
-    titleEm: string
+    titleEm?: string
     body: string
     highlightLabel: string
     highlight: string
@@ -143,8 +143,7 @@ export const milo: Profile = {
   },
   about: {
     eyebrow: 'About Milo',
-    title: 'Luz przed kamerą.',
-    titleEm: 'Charakter na planie.',
+    title: 'Na planie jest u siebie.',
     body: 'Milo wchodzi na plan bez spiny. Łatwo łapie relację, trzyma energię w kadrze i sprawdza się zarówno solo, jak we wspólnych projektach z Tolą.',
     highlightLabel: 'Work in pair',
     highlight: 'Wspólne kampanie komercyjne z siostrą Tolą',
