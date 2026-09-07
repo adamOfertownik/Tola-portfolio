@@ -19,7 +19,8 @@
   --color-ring: var(--ring);
 }
 
-:root {
+:root,
+[data-theme='tola'] {
   color-scheme: light;
   --background: oklch(0.975 0.008 75);
   --foreground: oklch(0.18 0.015 25);
@@ -35,11 +36,44 @@
   --ring: oklch(0.74 0.12 5);
 }
 
+[data-theme='milo'] {
+  color-scheme: light;
+  --background: oklch(0.972 0.01 240);
+  --foreground: oklch(0.2 0.03 250);
+  --card: oklch(0.99 0.006 240);
+  --card-foreground: oklch(0.2 0.03 250);
+  --primary: oklch(0.45 0.09 250);
+  --primary-foreground: oklch(0.985 0.008 240);
+  --secondary: oklch(0.94 0.02 245);
+  --secondary-foreground: oklch(0.22 0.03 250);
+  --muted: oklch(0.915 0.018 240);
+  --muted-foreground: oklch(0.46 0.03 250);
+  --border: oklch(0.85 0.025 245);
+  --ring: oklch(0.45 0.09 250);
+}
+
 @layer base {
   * { @apply border-border; }
   html { scroll-behavior: smooth; }
   body { @apply bg-background text-foreground font-sans; }
-  ::selection { background: oklch(0.74 0.12 5 / 30%); }
+  section[id], footer[id] { scroll-margin-top: 5.5rem; }
+  ::selection { background: color-mix(in oklch, var(--primary) 30%, transparent); }
 }
 
 .font-serif em { font-style: italic; font-weight: 400; }
+
+@media print {
+  header,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  article {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
