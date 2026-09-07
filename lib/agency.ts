@@ -4,5 +4,5 @@ export const agency = {
   email: 'office@moonkids.com.pl',
   phoneDisplay: '+48 508 288 673',
   phoneHref: 'tel:+48508288673',
-  city: 'Warsaw, Poland',
+  city: '3 CITY . WARSAW',
 } as const

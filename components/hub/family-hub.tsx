@@ -24,7 +24,7 @@ export function FamilyHub() {
       </header>
 
       <section className="mx-auto max-w-[1400px] px-6 pb-16 pt-32 md:px-10 md:pb-24 md:pt-40">
-        <p className="mb-6 text-[10px] uppercase tracking-[0.28em] text-muted-foreground">Family hub · Warsaw / Poland</p>
+        <p className="mb-6 text-[10px] uppercase tracking-[0.28em] text-muted-foreground">Family hub · 3 CITY . WARSAW</p>
         <h1 className="max-w-4xl font-serif text-[clamp(3.4rem,10vw,9rem)] leading-[0.82] tracking-[-0.08em]">
           Tola <span className="text-primary">&amp;</span>
           <br />
