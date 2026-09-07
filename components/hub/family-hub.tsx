@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { agency } from '@/lib/agency'
 import { milo, tola } from '@/lib/profiles'
+import { ContactForm } from '@/components/profile/contact-form'
 
 export function FamilyHub() {
   return (
@@ -19,6 +20,9 @@ export function FamilyHub() {
             <Link href="/milo" className="transition-colors hover:text-[oklch(0.45_0.09_250)]">
               Milo
             </Link>
+            <a href="#contact" className="transition-colors hover:text-primary">
+              Kontakt
+            </a>
           </nav>
         </div>
       </header>
@@ -54,6 +58,28 @@ export function FamilyHub() {
           alt={milo.hero.alt}
           accent="milo"
         />
+      </section>
+
+      <section id="contact" className="border-t border-border px-6 py-20 md:px-10 md:py-28">
+        <div className="mx-auto grid max-w-[1400px] gap-12 md:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="mb-5 text-[10px] uppercase tracking-[0.28em] text-primary">Commercial inquiries</p>
+            <h2 className="font-serif text-5xl tracking-[-0.06em] md:text-7xl">Book Tola &amp; Milo.</h2>
+            <p className="mt-6 max-w-md text-sm leading-6 text-muted-foreground">
+              Zapytanie idzie do Moon Kids. Jednocześnie zostaje u nas kopia, żebyśmy widzieli kto pisze i w jakiej sprawie.
+            </p>
+            <div className="mt-8 text-sm">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Booker · Moon Kids</p>
+              <a className="mt-2 inline-block text-lg hover:text-primary" href={`mailto:${agency.email}`}>
+                {agency.email}
+              </a>
+              <p className="mt-1">
+                <a href={agency.phoneHref}>{agency.phoneDisplay}</a>
+              </p>
+            </div>
+          </div>
+          <ContactForm tone="on-light" />
+        </div>
       </section>
 
       <footer className="border-t border-border px-6 py-10 md:px-10">
