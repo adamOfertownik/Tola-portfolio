@@ -28,9 +28,10 @@ export function ContactForm({ profile, tone = 'on-dark' }: ContactFormProps) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const form = event.currentTarget
     setStatus('sending')
     setError('')
-    const data = new FormData(event.currentTarget)
+    const data = new FormData(form)
     const payload = {
       name: String(data.get('name') ?? ''),
       company: String(data.get('company') ?? ''),
@@ -53,7 +54,7 @@ export function ContactForm({ profile, tone = 'on-dark' }: ContactFormProps) {
         throw new Error(result.error || 'Nie udało się wysłać zapytania.')
       }
       setStatus('sent')
-      event.currentTarget.reset()
+      form.reset()
     } catch (submitError) {
       setStatus('error')
       setError(submitError instanceof Error ? submitError.message : 'Nie udało się wysłać zapytania.')
