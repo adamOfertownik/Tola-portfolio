@@ -48,15 +48,13 @@ export type Profile = {
   metaDescription: string
 }
 
-const SMYK_CREDITS = 'Client: SMYK | Production: Ilmatic | Agency: Moon Kids'
-
 export const tola: Profile = {
   slug: 'tola',
   theme: 'tola',
   name: 'Tola',
   greeting: 'hello',
   kicker: 'Model portfolio · Warsaw / Poland',
-  campaignLine: 'Cover Girl XMASS AW26 Campaign for SMYK',
+  campaignLine: 'Commercial campaigns · Warsaw',
   ageLine: '2 lata / 4 miesiące',
   personality: 'naturalna energia, charakter, radość',
   hero: {
@@ -68,8 +66,8 @@ export const tola: Profile = {
     title: 'Mała osoba.',
     titleEm: 'Duża obecność.',
     body: 'Tola ma w sobie naturalność, która przyciąga uwagę. Jest otwarta, uważna i swobodna przed obiektywem — dokładnie taka, jakiej szukają marki dziecięce.',
-    highlightLabel: 'Recent highlight',
-    highlight: 'Okładka świątecznego katalogu Smyk',
+    highlightLabel: 'Work',
+    highlight: 'Kampanie komercyjne i testy agencyjne',
   },
   measurements: {
     age: '2 lata 4 miesiące',
@@ -83,10 +81,9 @@ export const tola: Profile = {
   photos: [
     {
       src: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — kampania XMASS AW26 dla SMYK',
-      label: 'Campaign 01 · SMYK',
+      alt: 'Tola — kadr komercyjny',
+      label: 'Campaign 01',
       category: 'commercial',
-      credits: SMYK_CREDITS,
     },
     {
       src: 'https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=1400&q=80',
@@ -96,10 +93,9 @@ export const tola: Profile = {
     },
     {
       src: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola na tle materiałów kampanii SMYK — kadr in-situ',
-      label: 'In-Situ · SMYK',
+      alt: 'Tola — kadr komercyjny',
+      label: 'Campaign 02',
       category: 'commercial',
-      credits: SMYK_CREDITS,
     },
     {
       src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1400&q=80',
@@ -125,7 +121,7 @@ export const tola: Profile = {
   navAbout: 'O Toli',
   metaTitle: 'Tola Lieske — Model Portfolio',
   metaDescription:
-    'Portfolio Toli Lieske, dziecięcej modelki reprezentowanej wyłącznie przez Moon Kids. Cover Girl XMASS AW26 Campaign for SMYK.',
+    'Portfolio Toli Lieske, dziecięcej modelki reprezentowanej wyłącznie przez Moon Kids. Sesje komercyjne w Warszawie.',
 }
 
 export const milo: Profile = {
@@ -134,7 +130,7 @@ export const milo: Profile = {
   name: 'Milo',
   greeting: 'hey',
   kicker: 'Model portfolio · Warsaw / Poland',
-  campaignLine: 'Commercial & sibling campaigns',
+  campaignLine: 'Commercial & sibling campaigns · Warsaw',
   ageLine: '5 lat',
   personality: 'luz, charakter, energia przed kamerą',
   hero: {
