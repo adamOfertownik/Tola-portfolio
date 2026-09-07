@@ -63,17 +63,61 @@
 .font-serif em { font-style: italic; font-weight: 400; }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  html,
+  body {
+    background: white !important;
+    height: auto !important;
+    overflow: hidden !important;
+  }
+
   header,
   .print\:hidden {
     display: none !important;
   }
 
-  body {
-    background: white !important;
+  main {
+    min-height: 0 !important;
+    padding: 0 !important;
   }
 
-  article {
+  .comp-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    width: 194mm;
+    max-height: 277mm;
+    overflow: hidden;
     border: none !important;
     box-shadow: none !important;
+  }
+
+  .comp-card-header h1 {
+    font-size: 42pt;
+    line-height: 0.77;
+    letter-spacing: -0.09em;
+  }
+
+  .comp-card-photos {
+    gap: 3mm;
+  }
+
+  .comp-card-photos > div {
+    aspect-ratio: auto;
+    height: 91mm;
+  }
+
+  .comp-card-specs {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .comp-card img {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 }
