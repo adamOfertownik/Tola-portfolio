@@ -130,7 +130,7 @@ export const milo: Profile = {
   name: 'Milo',
   greeting: 'hey',
   kicker: 'Model portfolio · Warsaw / Poland',
-  campaignLine: 'Commercial & sibling campaigns · Warsaw'
+  campaignLine: 'Commercial & sibling campaigns · Warsaw',
   ageLine: '5 lat',
   personality: 'luz, charakter, energia przed kamerą',
   hero: {
