@@ -108,13 +108,6 @@ export const tola: Profile = {
       category: 'polaroid',
     },
     {
-      src: 'https://images.unsplash.com/photo-1464699908537-0954e50791ee?auto=format&fit=crop&w=1400&q=80',
-      alt: 'Tola — kadr z kampanii komercyjnej',
-      label: 'Campaign 02',
-      category: 'commercial',
-      credits: SMYK_CREDITS,
-    },
-    {
       src: 'https://images.unsplash.com/photo-1503919005314-30d93d07d823?auto=format&fit=crop&w=1400&q=80',
       alt: 'Tola — zdjęcie lifestyle',
       label: 'Lifestyle 01',
